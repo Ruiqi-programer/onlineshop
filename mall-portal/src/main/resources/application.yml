@@ -5,16 +5,16 @@ spring:
     pathmatch:
       matching-strategy: ant_path_matcher
   datasource:
-    url: jdbc:mysql://localhost:3306/mall?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai&useSSL=false
-    username: root
-    password: wupeng
+    url: jdbc:mysql://3.252.229.222:3306/mall?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC
+    username: pengwu
+    password: pengwu
     druid:
-      initial-size: 5 #连接池初始化大小
-      min-idle: 10 #最小空闲连接数
-      max-active: 20 #最大连接数
+      initial-size: 5 # Initial size of the connection pool
+      min-idle: 10 # Minimum number of idle connections
+      max-active: 20 # Maximum number of connections
       web-stat-filter:
-        exclusions: "*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*" #不统计这些请求数据
-      stat-view-servlet: #访问监控网页的登录用户名和密码
+        exclusions: "*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*" # Exclude these requests from statistics
+      stat-view-servlet: # Login username and password for accessing monitoring page
         login-username: druid
         login-password: druid
   data:
@@ -23,17 +23,17 @@ spring:
       port: 27017
       database: mall-port
     redis:
-      host: localhost # Redis服务器地址
-      database: 0 # Redis数据库索引（默认为0）
-      port: 6379 # Redis服务器连接端口
-      password: wupeng # Redis服务器连接密码（默认为空）
-      timeout: 3000ms # 连接超时时间（毫秒）
+      host: localhost # Redis server address
+      database: 0 # Redis database index (default is 0)
+      port: 6379 # Redis server port
+      password: wupeng # Redis server password (default is empty)
+      timeout: 3000ms # Connection timeout (milliseconds)
   rabbitmq:
     host: localhost
     port: 5672
     virtual-host: /mall
-    username: mall
-    password: mall
+    username: wupeng
+    password: wupeng
 mybatis:
   mapper-locations:
     - classpath:dao/*.xml
@@ -42,14 +42,14 @@ management:
   endpoints:
     web:
       exposure:
-        include: '*' #暴露Actuator的监控端点
+        include: '*' # Expose all Actuator endpoints
   endpoint:
     health:
-      show-details: always #显示健康的详细信息
+      show-details: always # Show detailed health information
     env:
-      show-values: always #默认Actuator的环境变量会以****显示，这里开启显示
+      show-values: always # By default, Actuator hides environment values; enable display
     configprops:
-      show-values: always #默认Actuator的配置属性会以****显示，这里开启显示
+      show-values: always # By default, Actuator hides config properties; enable display
     info:
       enabled: true
 redis:
@@ -59,50 +59,50 @@ redis:
     orderId: 'oms:orderId'
     member: 'ums:member'
   expire:
-    authCode: 90 # 验证码超期时间
-    common: 86400 # 24小时
+    authCode: 90 # Auth code expiration time
+    common: 86400 # 24 hours
 rabbitmq:
   queue:
     name:
       cancelOrder: cancelOrderQueue
 springdoc:
   swagger-ui:
-    # 修改Swagger UI路径
+    # Customize Swagger UI path
     path: /swagger-ui.html
-    # 开启Swagger UI界面
+    # Enable Swagger UI page
     enabled: true
-    # 用于配置tag和operation的展开方式，这里配置为都不展开
+    # Configure tag and operation expansion; here set to none
     doc-expansion: 'none'
   api-docs:
-    # 修改api-docs路径
+    # Customize api-docs path
     path: /v3/api-docs
-    # 开启api-docs
+    # Enable api-docs
     enabled: true
   group-configs:
     - group: 'mall-portal'
       packages-to-scan: com.macro.mall.portal.controller
 sa-token:
-  # token名称 (同时也是cookie名称)
+  # Token name (also used as cookie name)
   token-name: Authorization
-  # token有效期，单位秒，-1代表永不过期
+  # Token validity period in seconds, -1 means never expires
   timeout: 604800
-  # token临时有效期 (指定时间内无操作就视为token过期)，单位秒
+  # Token temporary validity (if no operation within this time, token expires), in seconds
   active-timeout: -1
-  # 是否允许同一账号并发登录 (为false时新登录挤掉旧登录)
+  # Allow concurrent login for the same account (false means new login will kick out old session)
   is-concurrent: true
-  # 在多人登录同一账号时，是否共用一个token (为false时每次登录新建一个token)
+  # Whether to share one token among multiple logins of the same account (false means each login generates a new token)
   is-share: false
-  # token风格
+  # Token style
   token-style: uuid
-  # 是否输出操作日志
+  # Whether to log operations
   is-log: false
-  # 是否从cookie中读取token
+  # Whether to read token from cookie
   is-read-cookie: false
-  # 是否从head中读取token
+  # Whether to read token from header
   is-read-header: true
-  # token前缀
+  # Token prefix
   token-prefix: Bearer
-  # jwt秘钥
+  # JWT secret key
   jwt-secret-key: sa-secret-key123
-  # 是否打印banner
+  # Whether to print banner
   is-print: false

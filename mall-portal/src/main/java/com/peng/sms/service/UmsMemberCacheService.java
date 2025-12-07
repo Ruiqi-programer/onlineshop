@@ -1,34 +1,47 @@
-package com.macro.mall.portal.service;
+package com.peng.sms.service;
 
-import com.macro.mall.model.UmsMember;
+import com.peng.sms.model.UmsMember;
 
 /**
- * 会员信息缓存业务类
- * Created by macro on 2020/3/14.
+ * Member information caching service
  */
 public interface UmsMemberCacheService {
+
     /**
-     * 删除会员用户缓存
+     * Delete member cache
+     *
+     * @param memberId ID of the member
      */
     void delMember(Long memberId);
 
     /**
-     * 获取会员用户缓存
+     * Get member cache
+     *
+     * @param memberId ID of the member
+     * @return cached member information
      */
     UmsMember getMember(Long memberId);
 
     /**
-     * 设置会员用户缓存
+     * Set member cache
+     *
+     * @param member member information
      */
     void setMember(UmsMember member);
 
     /**
-     * 设置验证码
+     * Set authentication code
+     *
+     * @param telephone member's phone number
+     * @param authCode  authentication code
      */
     void setAuthCode(String telephone, String authCode);
 
     /**
-     * 获取验证码
+     * Get authentication code
+     *
+     * @param telephone member's phone number
+     * @return authentication code
      */
     String getAuthCode(String telephone);
 }

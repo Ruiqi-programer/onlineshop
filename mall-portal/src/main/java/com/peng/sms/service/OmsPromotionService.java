@@ -1,18 +1,20 @@
-package com.macro.mall.portal.service;
+package com.peng.sms.service;
 
-import com.macro.mall.model.OmsCartItem;
-import com.macro.mall.portal.domain.CartPromotionItem;
+import com.peng.sms.domain.CartPromotionItem;
+import com.peng.sms.model.OmsCartItem;
 
 import java.util.List;
 
 /**
- * Created by macro on 2018/8/27.
- * 促销管理Service
+ * Promotion Management Service
  */
 public interface OmsPromotionService {
+
     /**
-     * 计算购物车中的促销活动信息
-     * @param cartItemList 购物车
+     * Calculate promotion information for items in the shopping cart
+     *
+     * @param cartItemList the shopping cart items
+     * @return list of cart items with promotion details
      */
     List<CartPromotionItem> calcCartPromotion(List<OmsCartItem> cartItemList);
 }

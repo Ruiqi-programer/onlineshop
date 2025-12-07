@@ -1,35 +1,46 @@
-package com.macro.mall.portal.util;
+package com.peng.sms.util;
 
-import java.util.Calendar;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZoneId;
 import java.util.Date;
 
-/**
- * 日期工具类
- * Created by macro on 2019/1/29.
- */
 public class DateUtil {
 
     /**
-     * 从Date类型的时间中提取日期部分
+     * Extracts the date part from a Date object (time set to 00:00:00)
      */
     public static Date getDate(Date date) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(date);
-        calendar.set(Calendar.HOUR_OF_DAY, 0);
-        calendar.set(Calendar.MINUTE, 0);
-        calendar.set(Calendar.SECOND, 0);
-        return calendar.getTime();
+        LocalDate localDate = date.toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate();
+        return Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
     }
 
     /**
-     * 从Date类型的时间中提取时间部分
+     * Extracts the time part from a Date object (date set to 1970-01-01)
      */
     public static Date getTime(Date date) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(date);
-        calendar.set(Calendar.YEAR, 1970);
-        calendar.set(Calendar.MONTH, 0);
-        calendar.set(Calendar.DAY_OF_MONTH, 1);
-        return calendar.getTime();
+        LocalTime localTime = date.toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalTime();
+        LocalDate epochDate = LocalDate.of(1970, 1, 1);
+        LocalDateTime dateTime = LocalDateTime.of(epochDate, localTime);
+        return Date.from(dateTime.atZone(ZoneId.systemDefault()).toInstant());
+    }
+
+    /**
+     * Optional: Directly get LocalDate (without converting to Date)
+     */
+    public static LocalDate toLocalDate(Date date) {
+        return date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+    }
+
+    /**
+     * Optional: Directly get LocalTime (without converting to Date)
+     */
+    public static LocalTime toLocalTime(Date date) {
+        return date.toInstant().atZone(ZoneId.systemDefault()).toLocalTime();
     }
 }

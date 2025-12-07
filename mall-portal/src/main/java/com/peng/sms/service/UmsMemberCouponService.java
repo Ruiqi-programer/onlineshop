@@ -1,41 +1,56 @@
-package com.macro.mall.portal.service;
+package com.peng.sms.service;
 
-import com.macro.mall.model.SmsCoupon;
-import com.macro.mall.model.SmsCouponHistory;
-import com.macro.mall.portal.domain.CartPromotionItem;
-import com.macro.mall.portal.domain.SmsCouponHistoryDetail;
+import com.peng.sms.domain.CartPromotionItem;
+import com.peng.sms.domain.SmsCouponHistoryDetail;
+import com.peng.sms.model.SmsCoupon;
+import com.peng.sms.model.SmsCouponHistory;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 /**
- * 用户优惠券管理Service
- * Created by macro on 2018/8/29.
+ * User coupon management service
  */
 public interface UmsMemberCouponService {
+
     /**
-     * 会员添加优惠券
+     * Member adds a coupon
+     *
+     * @param couponId ID of the coupon
      */
     @Transactional
     void add(Long couponId);
 
     /**
-     * 获取优惠券历史列表
+     * Get the coupon history list
+     *
+     * @param useStatus status of coupon usage
+     * @return list of coupon history
      */
     List<SmsCouponHistory> listHistory(Integer useStatus);
 
     /**
-     * 根据购物车信息获取可用优惠券
+     * Get usable coupons based on shopping cart information
+     *
+     * @param cartItemList list of cart promotion items
+     * @param type         type of coupon
+     * @return list of usable coupon details
      */
     List<SmsCouponHistoryDetail> listCart(List<CartPromotionItem> cartItemList, Integer type);
 
     /**
-     * 获取当前商品相关优惠券
+     * Get coupons related to a specific product
+     *
+     * @param productId ID of the product
+     * @return list of coupons
      */
     List<SmsCoupon> listByProduct(Long productId);
 
     /**
-     * 获取用户优惠券列表
+     * Get user's coupon list
+     *
+     * @param useStatus status of coupon usage
+     * @return list of coupons
      */
     List<SmsCoupon> list(Integer useStatus);
 }

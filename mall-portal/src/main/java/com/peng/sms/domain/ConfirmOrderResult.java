@@ -1,27 +1,43 @@
-package com.macro.mall.portal.domain;
+package com.peng.sms.domain;
 
-import com.macro.mall.model.UmsIntegrationConsumeSetting;
-import com.macro.mall.model.UmsMemberReceiveAddress;
+import com.peng.sms.model.UmsIntegrationConsumeSetting;
+import com.peng.sms.model.UmsMemberReceiveAddress;
 
 import java.math.BigDecimal;
 import java.util.List;
 
 /**
- * 确认单信息封装
- * Created by macro on 2018/8/30.
+ * Encapsulation of order confirmation information
  */
 public class ConfirmOrderResult {
-    //包含优惠信息的购物车信息
+    /**
+     * Shopping cart information including promotion details
+     */
     private List<CartPromotionItem> cartPromotionItemList;
-    //用户收货地址列表
+
+    /**
+     * User's shipping address list
+     */
     private List<UmsMemberReceiveAddress> memberReceiveAddressList;
-    //用户可用优惠券列表
+
+    /**
+     * User's available coupon list
+     */
     private List<SmsCouponHistoryDetail> couponHistoryDetailList;
-    //积分使用规则
+
+    /**
+     * Rules for using points
+     */
     private UmsIntegrationConsumeSetting integrationConsumeSetting;
-    //会员持有的积分
+
+    /**
+     * Member's available points
+     */
     private Integer memberIntegration;
-    //计算的金额
+
+    /**
+     * Calculated amounts
+     */
     private CalcAmount calcAmount;
 
     public List<CartPromotionItem> getCartPromotionItemList() {
@@ -72,14 +88,28 @@ public class ConfirmOrderResult {
         this.calcAmount = calcAmount;
     }
 
-    public static class CalcAmount{
-        //订单商品总金额
+    /**
+     * Inner class representing calculated amounts
+     */
+    public static class CalcAmount {
+        /**
+         * Total amount of order items
+         */
         private BigDecimal totalAmount;
-        //运费
+
+        /**
+         * Shipping fee
+         */
         private BigDecimal freightAmount;
-        //活动优惠
+
+        /**
+         * Promotion discount
+         */
         private BigDecimal promotionAmount;
-        //应付金额
+
+        /**
+         * Amount payable
+         */
         private BigDecimal payAmount;
 
         public BigDecimal getTotalAmount() {

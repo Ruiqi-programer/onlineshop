@@ -1,6 +1,6 @@
-package com.macro.mall.portal.domain;
+package com.peng.sms.domain;
 
-import com.macro.mall.model.*;
+import com.peng.sms.model.*;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
@@ -8,26 +8,32 @@ import lombok.Setter;
 import java.util.List;
 
 /**
- * 前台商品详情
- * Created by macro on 2020/4/6.
+ * Frontend Product Detail
  */
 @Getter
 @Setter
-public class PmsPortalProductDetail{
-    @Schema(title = "商品信息")
+public class PmsPortalProductDetail {
+    @Schema(title = "Product information")
     private PmsProduct product;
-    @Schema(title = "商品品牌")
+
+    @Schema(title = "Product brand")
     private PmsBrand brand;
-    @Schema(title = "商品属性与参数")
+
+    @Schema(title = "Product attributes and parameters")
     private List<PmsProductAttribute> productAttributeList;
-    @Schema(title = "手动录入的商品属性与参数值")
+
+    @Schema(title = "Manually entered product attribute values")
     private List<PmsProductAttributeValue> productAttributeValueList;
-    @Schema(title = "商品的sku库存信息")
+
+    @Schema(title = "Product SKU stock information")
     private List<PmsSkuStock> skuStockList;
-    @Schema(title = "商品阶梯价格设置")
+
+    @Schema(title = "Product tiered pricing settings")
     private List<PmsProductLadder> productLadderList;
-    @Schema(title = "商品满减价格设置")
+
+    @Schema(title = "Product full reduction pricing settings")
     private List<PmsProductFullReduction> productFullReductionList;
-    @Schema(title = "商品可用优惠券")
+
+    @Schema(title = "Available coupons for the product")
     private List<SmsCoupon> couponList;
 }

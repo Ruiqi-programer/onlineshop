@@ -1,14 +1,15 @@
-package com.macro.mall.portal.service.impl;
+package com.peng.sms.service.impl;
 
 import com.github.pagehelper.PageHelper;
-import com.macro.mall.mapper.*;
-import com.macro.mall.model.*;
-import com.macro.mall.portal.dao.HomeDao;
-import com.macro.mall.portal.domain.FlashPromotionProduct;
-import com.macro.mall.portal.domain.HomeContentResult;
-import com.macro.mall.portal.domain.HomeFlashPromotion;
-import com.macro.mall.portal.service.HomeService;
-import com.macro.mall.portal.util.DateUtil;
+
+import com.peng.sms.dao.HomeDao;
+import com.peng.sms.domain.FlashPromotionProduct;
+import com.peng.sms.domain.HomeContentResult;
+import com.peng.sms.domain.HomeFlashPromotion;
+import com.peng.sms.mapper.*;
+import com.peng.sms.model.*;
+import com.peng.sms.service.HomeService;
+import com.peng.sms.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -17,11 +18,11 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * 首页内容管理Service实现类
- * Created by macro on 2019/1/28.
+ * Implementation of Home Content Management Service
  */
 @Service
 public class HomeServiceImpl implements HomeService {
+
     @Autowired
     private SmsHomeAdvertiseMapper advertiseMapper;
     @Autowired
@@ -40,18 +41,18 @@ public class HomeServiceImpl implements HomeService {
     @Override
     public HomeContentResult content() {
         HomeContentResult result = new HomeContentResult();
-        //获取首页广告
+        // Get homepage advertisements
         result.setAdvertiseList(getHomeAdvertiseList());
-        //获取推荐品牌
-        result.setBrandList(homeDao.getRecommendBrandList(0,6));
-        //获取秒杀信息
+        // Get recommended brands
+        result.setBrandList(homeDao.getRecommendedBrands(0,6));
+        // Get flash sale info
         result.setHomeFlashPromotion(getHomeFlashPromotion());
-        //获取新品推荐
-        result.setNewProductList(homeDao.getNewProductList(0,4));
-        //获取人气推荐
-        result.setHotProductList(homeDao.getHotProductList(0,4));
-        //获取推荐专题
-        result.setSubjectList(homeDao.getRecommendSubjectList(0,4));
+        // Get new products
+        result.setNewProductList(homeDao.getNewProducts(0,4));
+        // Get hot products
+        result.setHotProductList(homeDao.getHotProducts(0,4));
+        // Get recommended subjects
+        result.setSubjectList(homeDao.getRecommendedSubjects(0,4));
         return result;
     }
 
@@ -91,41 +92,41 @@ public class HomeServiceImpl implements HomeService {
     @Override
     public List<PmsProduct> hotProductList(Integer pageNum, Integer pageSize) {
         int offset = pageSize * (pageNum - 1);
-        return homeDao.getHotProductList(offset, pageSize);
+        return homeDao.getHotProducts(offset, pageSize);
     }
 
     @Override
     public List<PmsProduct> newProductList(Integer pageNum, Integer pageSize) {
         int offset = pageSize * (pageNum - 1);
-        return homeDao.getNewProductList(offset, pageSize);
+        return homeDao.getNewProducts(offset, pageSize);
     }
 
     private HomeFlashPromotion getHomeFlashPromotion() {
         HomeFlashPromotion homeFlashPromotion = new HomeFlashPromotion();
-        //获取当前秒杀活动
+        // Get current flash promotion
         Date now = new Date();
         SmsFlashPromotion flashPromotion = getFlashPromotion(now);
         if (flashPromotion != null) {
-            //获取当前秒杀场次
+            // Get current flash promotion session
             SmsFlashPromotionSession flashPromotionSession = getFlashPromotionSession(now);
             if (flashPromotionSession != null) {
                 homeFlashPromotion.setStartTime(flashPromotionSession.getStartTime());
                 homeFlashPromotion.setEndTime(flashPromotionSession.getEndTime());
-                //获取下一个秒杀场次
+                // Get next flash promotion session
                 SmsFlashPromotionSession nextSession = getNextFlashPromotionSession(homeFlashPromotion.getStartTime());
-                if(nextSession!=null){
+                if(nextSession != null){
                     homeFlashPromotion.setNextStartTime(nextSession.getStartTime());
                     homeFlashPromotion.setNextEndTime(nextSession.getEndTime());
                 }
-                //获取秒杀商品
-                List<FlashPromotionProduct> flashProductList = homeDao.getFlashProductList(flashPromotion.getId(), flashPromotionSession.getId());
+                // Get flash sale products
+                List<FlashPromotionProduct> flashProductList = homeDao.getFlashPromotionProducts(flashPromotion.getId(), flashPromotionSession.getId());
                 homeFlashPromotion.setProductList(flashProductList);
             }
         }
         return homeFlashPromotion;
     }
 
-    //获取下一个场次信息
+    // Get the next flash promotion session after a given date
     private SmsFlashPromotionSession getNextFlashPromotionSession(Date date) {
         SmsFlashPromotionSessionExample sessionExample = new SmsFlashPromotionSessionExample();
         sessionExample.createCriteria()
@@ -145,7 +146,7 @@ public class HomeServiceImpl implements HomeService {
         return advertiseMapper.selectByExample(example);
     }
 
-    //根据时间获取秒杀活动
+    // Get flash promotion based on date
     private SmsFlashPromotion getFlashPromotion(Date date) {
         Date currDate = DateUtil.getDate(date);
         SmsFlashPromotionExample example = new SmsFlashPromotionExample();
@@ -160,7 +161,7 @@ public class HomeServiceImpl implements HomeService {
         return null;
     }
 
-    //根据时间获取秒杀场次
+    // Get flash promotion session based on time
     private SmsFlashPromotionSession getFlashPromotionSession(Date date) {
         Date currTime = DateUtil.getTime(date);
         SmsFlashPromotionSessionExample sessionExample = new SmsFlashPromotionSessionExample();

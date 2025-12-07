@@ -1,18 +1,33 @@
-package com.macro.mall.portal.dao;
+package com.peng.sms.dao;
 
-import com.macro.mall.model.SmsCoupon;
-import com.macro.mall.portal.domain.CartProduct;
-import com.macro.mall.portal.domain.PromotionProduct;
+import com.peng.sms.domain.CartProduct;
+import com.peng.sms.domain.PromotionProduct;
+import com.peng.sms.model.SmsCoupon;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
 /**
- * 前台系统自定义商品Dao
- * Created by macro on 2018/8/2.
+ * Custom DAO for frontend system products
  */
 public interface PortalProductDao {
+
+    /**
+     * Get product information for the shopping cart
+     */
     CartProduct getCartProduct(@Param("id") Long id);
+
+    /**
+     * Get a list of promotion products by their IDs
+     */
     List<PromotionProduct> getPromotionProductList(@Param("ids") List<Long> ids);
-    List<SmsCoupon> getAvailableCouponList(@Param("productId") Long productId,@Param("productCategoryId")Long productCategoryId);
+
+    /**
+     * Get a list of available coupons for a product
+     *
+     * @param productId         the ID of the product
+     * @param productCategoryId the category ID of the product
+     */
+    List<SmsCoupon> getAvailableCouponList(@Param("productId") Long productId,
+                                           @Param("productCategoryId") Long productCategoryId);
 }

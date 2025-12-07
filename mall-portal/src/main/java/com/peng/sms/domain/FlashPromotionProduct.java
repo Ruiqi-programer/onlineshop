@@ -1,19 +1,29 @@
-package com.macro.mall.portal.domain;
+package com.peng.sms.domain;
 
-import com.macro.mall.model.PmsProduct;
+import com.peng.sms.model.PmsProduct;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.math.BigDecimal;
 
 /**
- * 秒杀信息和商品对象封装
- * Created by macro on 2019/1/28.
+ * Encapsulation of flash promotion information and product
  */
 @Getter
 @Setter
-public class FlashPromotionProduct extends PmsProduct{
+public class FlashPromotionProduct extends PmsProduct {
+    /**
+     * Flash promotion price
+     */
     private BigDecimal flashPromotionPrice;
+
+    /**
+     * Total quantity available in flash promotion
+     */
     private Integer flashPromotionCount;
+
+    /**
+     * Limit per customer in flash promotion
+     */
     private Integer flashPromotionLimit;
 }

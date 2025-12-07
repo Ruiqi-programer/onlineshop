@@ -1,4 +1,4 @@
-package com.macro.mall.portal;
+package com.peng.sms;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -7,7 +7,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 
 @EnableFeignClients
 @EnableDiscoveryClient
-@SpringBootApplication(scanBasePackages = "com.macro.mall")
+@SpringBootApplication(scanBasePackages = "com.peng.sms")
 public class MallPortalApplication {
     public static void main(String[] args) {
         SpringApplication.run(MallPortalApplication.class, args);

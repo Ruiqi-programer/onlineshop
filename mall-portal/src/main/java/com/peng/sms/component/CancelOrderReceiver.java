@@ -1,6 +1,6 @@
-package com.macro.mall.portal.component;
+package com.peng.sms.component;
 
-import com.macro.mall.portal.service.OmsPortalOrderService;
+import com.peng.sms.service.OmsPortalOrderService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.annotation.RabbitHandler;
@@ -9,18 +9,34 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
- * 取消订单消息的处理者
- * Created by macro on 2018/9/14.
+ * Handler for processing order cancellation messages.
  */
 @Component
 @RabbitListener(queues = "mall.order.cancel")
 public class CancelOrderReceiver {
-    private static Logger LOGGER =LoggerFactory.getLogger(CancelOrderReceiver.class);
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(CancelOrderReceiver.class);
+
     @Autowired
-    private OmsPortalOrderService portalOrderService;
+    private final OmsPortalOrderService portalOrderService;
+
+    @Autowired
+    public CancelOrderReceiver(OmsPortalOrderService portalOrderService) {
+        this.portalOrderService = portalOrderService;
+    }
+
+    /**
+     * Handle the incoming order cancellation message.
+     *
+     * @param orderId the ID of the order to be cancelled
+     */
     @RabbitHandler
-    public void handle(Long orderId){
+    public void handle(Long orderId) {
+        if (orderId == null || orderId <= 0) {
+            LOGGER.warn("Received invalid orderId: {}", orderId);
+            return;
+        }
         portalOrderService.cancelOrder(orderId);
-        LOGGER.info("process orderId:{}",orderId);
+        LOGGER.info("Processed order cancellation for orderId: {}", orderId);
     }
 }

@@ -1,40 +1,40 @@
-package com.macro.mall.portal.dao;
+package com.peng.sms.dao;
 
-import com.macro.mall.model.OmsOrderItem;
-import com.macro.mall.portal.domain.OmsOrderDetail;
+import com.peng.sms.domain.OmsOrderDetail;
+import com.peng.sms.model.OmsOrderItem;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
 /**
- * 前台订单自定义Dao
- * Created by macro on 2018/9/4.
+ * Custom DAO for frontend orders
  */
 public interface PortalOrderDao {
+
     /**
-     * 获取订单及下单商品详情
+     * Get order details along with ordered products
      */
     OmsOrderDetail getDetail(@Param("orderId") Long orderId);
 
     /**
-     * 修改 pms_sku_stock表的锁定库存及真实库存
+     * Update the locked stock and actual stock in the pms_sku_stock table
      */
     int updateSkuStock(@Param("itemList") List<OmsOrderItem> orderItemList);
 
     /**
-     * 获取超时订单
-     * @param minute 超时时间（分）
+     * Get orders that have timed out
+     *
+     * @param minute timeout in minutes
      */
     List<OmsOrderDetail> getTimeOutOrders(@Param("minute") Integer minute);
 
     /**
-     * 批量修改订单状态
+     * Batch update order status
      */
-    int updateOrderStatus(@Param("ids") List<Long> ids,@Param("status") Integer status);
+    int updateOrderStatus(@Param("ids") List<Long> ids, @Param("status") Integer status);
 
     /**
-     * 解除取消订单的库存锁定
+     * Release the locked stock of cancelled orders
      */
     int releaseSkuStockLock(@Param("itemList") List<OmsOrderItem> orderItemList);
-
 }

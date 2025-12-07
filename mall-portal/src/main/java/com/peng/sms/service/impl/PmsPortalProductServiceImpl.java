@@ -1,14 +1,14 @@
-package com.macro.mall.portal.service.impl;
+package com.peng.sms.service.impl;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import com.github.pagehelper.PageHelper;
-import com.macro.mall.mapper.*;
-import com.macro.mall.model.*;
-import com.macro.mall.portal.dao.PortalProductDao;
-import com.macro.mall.portal.domain.PmsPortalProductDetail;
-import com.macro.mall.portal.domain.PmsProductCategoryNode;
-import com.macro.mall.portal.service.PmsPortalProductService;
+import com.peng.sms.dao.PortalProductDao;
+import com.peng.sms.domain.PmsPortalProductDetail;
+import com.peng.sms.domain.PmsProductCategoryNode;
+import com.peng.sms.mapper.*;
+import com.peng.sms.model.*;
+import com.peng.sms.service.PmsPortalProductService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,8 +17,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * 前台订单管理Service实现类
- * Created by macro on 2020/4/6.
+ * Frontend Product Management Service Implementation
  */
 @Service
 public class PmsPortalProductServiceImpl implements PmsPortalProductService {
@@ -46,17 +45,19 @@ public class PmsPortalProductServiceImpl implements PmsPortalProductService {
         PageHelper.startPage(pageNum, pageSize);
         PmsProductExample example = new PmsProductExample();
         PmsProductExample.Criteria criteria = example.createCriteria();
-        criteria.andDeleteStatusEqualTo(0);
+        criteria.andDeleteStatusEqualTo(0); // Only fetch products not deleted
+
         if (StrUtil.isNotEmpty(keyword)) {
-            criteria.andNameLike("%" + keyword + "%");
+            criteria.andNameLike("%" + keyword + "%"); // Keyword search
         }
         if (brandId != null) {
-            criteria.andBrandIdEqualTo(brandId);
+            criteria.andBrandIdEqualTo(brandId); // Filter by brand
         }
         if (productCategoryId != null) {
-            criteria.andProductCategoryIdEqualTo(productCategoryId);
+            criteria.andProductCategoryIdEqualTo(productCategoryId); // Filter by category
         }
-        //1->按新品；2->按销量；3->价格从低到高；4->价格从高到低
+
+        // Sorting options: 1->New arrivals, 2->Sales, 3->Price low to high, 4->Price high to low
         if (sort == 1) {
             example.setOrderByClause("id desc");
         } else if (sort == 2) {
@@ -66,6 +67,7 @@ public class PmsPortalProductServiceImpl implements PmsPortalProductService {
         } else if (sort == 4) {
             example.setOrderByClause("price desc");
         }
+
         return productMapper.selectByExample(example);
     }
 
@@ -73,69 +75,87 @@ public class PmsPortalProductServiceImpl implements PmsPortalProductService {
     public List<PmsProductCategoryNode> categoryTreeList() {
         PmsProductCategoryExample example = new PmsProductCategoryExample();
         List<PmsProductCategory> allList = productCategoryMapper.selectByExample(example);
+
+        // Build tree structure for categories
         List<PmsProductCategoryNode> result = allList.stream()
-                .filter(item -> item.getParentId().equals(0L))
-                .map(item -> covert(item, allList)).collect(Collectors.toList());
+                .filter(item -> item.getParentId().equals(0L)) // Root categories
+                .map(item -> convertToNode(item, allList))
+                .collect(Collectors.toList());
+
         return result;
     }
 
     @Override
     public PmsPortalProductDetail detail(Long id) {
         PmsPortalProductDetail result = new PmsPortalProductDetail();
-        //获取商品信息
+
+        // Fetch product information
         PmsProduct product = productMapper.selectByPrimaryKey(id);
         result.setProduct(product);
-        //获取品牌信息
+
+        // Fetch brand information
         PmsBrand brand = brandMapper.selectByPrimaryKey(product.getBrandId());
         result.setBrand(brand);
-        //获取商品属性信息
+
+        // Fetch product attributes
         PmsProductAttributeExample attributeExample = new PmsProductAttributeExample();
         attributeExample.createCriteria().andProductAttributeCategoryIdEqualTo(product.getProductAttributeCategoryId());
         List<PmsProductAttribute> productAttributeList = productAttributeMapper.selectByExample(attributeExample);
         result.setProductAttributeList(productAttributeList);
-        //获取商品属性值信息
-        if(CollUtil.isNotEmpty(productAttributeList)){
-            List<Long> attributeIds = productAttributeList.stream().map(PmsProductAttribute::getId).collect(Collectors.toList());
+
+        // Fetch product attribute values
+        if (CollUtil.isNotEmpty(productAttributeList)) {
+            List<Long> attributeIds = productAttributeList.stream()
+                    .map(PmsProductAttribute::getId)
+                    .collect(Collectors.toList());
             PmsProductAttributeValueExample attributeValueExample = new PmsProductAttributeValueExample();
-            attributeValueExample.createCriteria().andProductIdEqualTo(product.getId())
+            attributeValueExample.createCriteria()
+                    .andProductIdEqualTo(product.getId())
                     .andProductAttributeIdIn(attributeIds);
             List<PmsProductAttributeValue> productAttributeValueList = productAttributeValueMapper.selectByExample(attributeValueExample);
             result.setProductAttributeValueList(productAttributeValueList);
         }
-        //获取商品SKU库存信息
+
+        // Fetch SKU stock information
         PmsSkuStockExample skuExample = new PmsSkuStockExample();
         skuExample.createCriteria().andProductIdEqualTo(product.getId());
         List<PmsSkuStock> skuStockList = skuStockMapper.selectByExample(skuExample);
         result.setSkuStockList(skuStockList);
-        //商品阶梯价格设置
-        if(product.getPromotionType()==3){
+
+        // Fetch ladder prices if promotion type is discount
+        if (product.getPromotionType() == 3) {
             PmsProductLadderExample ladderExample = new PmsProductLadderExample();
             ladderExample.createCriteria().andProductIdEqualTo(product.getId());
             List<PmsProductLadder> productLadderList = productLadderMapper.selectByExample(ladderExample);
             result.setProductLadderList(productLadderList);
         }
-        //商品满减价格设置
-        if(product.getPromotionType()==4){
+
+        // Fetch full reduction promotions if promotion type is full reduction
+        if (product.getPromotionType() == 4) {
             PmsProductFullReductionExample fullReductionExample = new PmsProductFullReductionExample();
             fullReductionExample.createCriteria().andProductIdEqualTo(product.getId());
             List<PmsProductFullReduction> productFullReductionList = productFullReductionMapper.selectByExample(fullReductionExample);
             result.setProductFullReductionList(productFullReductionList);
         }
-        //商品可用优惠券
-        result.setCouponList(portalProductDao.getAvailableCouponList(product.getId(),product.getProductCategoryId()));
+
+        // Fetch available coupons for the product
+        result.setCouponList(portalProductDao.getAvailableCouponList(product.getId(), product.getProductCategoryId()));
+
         return result;
     }
 
-
     /**
-     * 初始对象转化为节点对象
+     * Convert a category object to a node with children
      */
-    private PmsProductCategoryNode covert(PmsProductCategory item, List<PmsProductCategory> allList) {
+    private PmsProductCategoryNode convertToNode(PmsProductCategory item, List<PmsProductCategory> allList) {
         PmsProductCategoryNode node = new PmsProductCategoryNode();
         BeanUtils.copyProperties(item, node);
+
         List<PmsProductCategoryNode> children = allList.stream()
                 .filter(subItem -> subItem.getParentId().equals(item.getId()))
-                .map(subItem -> covert(subItem, allList)).collect(Collectors.toList());
+                .map(subItem -> convertToNode(subItem, allList))
+                .collect(Collectors.toList());
+
         node.setChildren(children);
         return node;
     }

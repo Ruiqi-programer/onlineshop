@@ -1,4 +1,4 @@
-package com.macro.mall.portal.config;
+package com.peng.sms.config;
 
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.ExternalDocumentation;
@@ -14,8 +14,7 @@ import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
- * SpringDoc相关配置
- * Created by macro on 2024/3/5.
+ * Configuration for SpringDoc (OpenAPI / Swagger)
  */
 @Configuration
 public class SpringDocConfig implements WebMvcConfigurer {
@@ -25,13 +24,13 @@ public class SpringDocConfig implements WebMvcConfigurer {
     @Bean
     public OpenAPI mallPortalOpenAPI() {
         return new OpenAPI()
-                .info(new Info().title("mall前台系统")
-                        .description("mall前台相关接口文档")
+                .info(new Info().title("Mall Frontend System")
+                        .description("API documentation for the mall frontend system")
                         .version("v1.0.0")
                         .license(new License().name("Apache 2.0")
                                 .url("https://github.com/macrozheng/mall-learning")))
                 .externalDocs(new ExternalDocumentation()
-                        .description("SpringBoot实战电商项目mall（60K+Star）全套文档")
+                        .description("Full documentation for SpringBoot e-commerce project mall (60K+ Stars)")
                         .url("http://www.macrozheng.com"))
                 .addSecurityItem(new SecurityRequirement().addList(SECURITY_SCHEME_NAME))
                 .components(new Components()
@@ -45,17 +44,17 @@ public class SpringDocConfig implements WebMvcConfigurer {
 
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
-        //配置访问`/swagger-ui/`路径时可以直接跳转到`/swagger-ui/index.html`
+        // Configure direct redirection from `/swagger-ui/` to `/swagger-ui/index.html`
         registry.addViewController("/swagger-ui/").setViewName("redirect:/swagger-ui/index.html");
     }
 
     @Bean
     public GlobalOpenApiCustomizer orderGlobalOpenApiCustomizer() {
-        //解决Knife4j配置认证后无法自动添加认证头的问题
+        // Solve the issue where Knife4j cannot automatically add authentication headers after configuration
         return openApi -> {
-            //全局添加鉴权参数
+            // Add security requirement globally to all operations
             if (openApi.getPaths() != null) {
-                openApi.getPaths().forEach((s, pathItem) -> {
+                openApi.getPaths().forEach((path, pathItem) -> {
                     pathItem.readOperations().forEach(operation -> {
                         operation.addSecurityItem(new SecurityRequirement().addList(SECURITY_SCHEME_NAME));
                     });
@@ -63,6 +62,4 @@ public class SpringDocConfig implements WebMvcConfigurer {
             }
         };
     }
-
 }
-

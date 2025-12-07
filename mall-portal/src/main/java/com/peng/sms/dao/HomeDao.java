@@ -1,40 +1,39 @@
-package com.macro.mall.portal.dao;
+package com.peng.sms.dao;
 
-import com.macro.mall.model.CmsSubject;
-import com.macro.mall.model.PmsBrand;
-import com.macro.mall.model.PmsProduct;
-import com.macro.mall.portal.domain.FlashPromotionProduct;
+import com.peng.sms.domain.FlashPromotionProduct;
+import com.peng.sms.model.CmsSubject;
+import com.peng.sms.model.PmsBrand;
+import com.peng.sms.model.PmsProduct;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
 /**
- * 首页内容管理自定义Dao
- * Created by macro on 2019/1/28.
+ * Custom DAO for Home Content Management
  */
 public interface HomeDao {
 
     /**
-     * 获取推荐品牌
+     * Get recommended brands
      */
-    List<PmsBrand> getRecommendBrandList(@Param("offset") Integer offset,@Param("limit") Integer limit);
+    List<PmsBrand> getRecommendedBrands(@Param("offset") Integer offset, @Param("limit") Integer limit);
+    /**
+     * Get flash sale products
+     */
+    List<FlashPromotionProduct> getFlashPromotionProducts(@Param("flashPromotionId") Long flashPromotionId, @Param("sessionId") Long sessionId);
 
     /**
-     * 获取秒杀商品
+     * Get new products
      */
-    List<FlashPromotionProduct> getFlashProductList(@Param("flashPromotionId") Long flashPromotionId, @Param("sessionId") Long sessionId);
+    List<PmsProduct> getNewProducts(@Param("offset") Integer offset, @Param("limit") Integer limit);
 
     /**
-     * 获取新品推荐
+     * Get hot products
      */
-    List<PmsProduct> getNewProductList(@Param("offset") Integer offset,@Param("limit") Integer limit);
-    /**
-     * 获取人气推荐
-     */
-    List<PmsProduct> getHotProductList(@Param("offset") Integer offset,@Param("limit") Integer limit);
+    List<PmsProduct> getHotProducts(@Param("offset") Integer offset, @Param("limit") Integer limit);
 
     /**
-     * 获取推荐专题
+     * Get recommended subjects
      */
-    List<CmsSubject> getRecommendSubjectList(@Param("offset") Integer offset, @Param("limit") Integer limit);
+    List<CmsSubject> getRecommendedSubjects(@Param("offset") Integer offset, @Param("limit") Integer limit);
 }

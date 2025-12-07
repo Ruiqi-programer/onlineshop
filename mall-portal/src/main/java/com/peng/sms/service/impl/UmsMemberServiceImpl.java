@@ -1,20 +1,20 @@
-package com.macro.mall.portal.service.impl;
+package com.peng.sms.service.impl;
 
 import cn.dev33.satoken.stp.SaTokenInfo;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.crypto.digest.BCrypt;
-import com.macro.mall.common.constant.AuthConstant;
-import com.macro.mall.common.dto.UserDto;
-import com.macro.mall.common.exception.Asserts;
-import com.macro.mall.mapper.UmsMemberLevelMapper;
-import com.macro.mall.mapper.UmsMemberMapper;
-import com.macro.mall.model.UmsMember;
-import com.macro.mall.model.UmsMemberExample;
-import com.macro.mall.model.UmsMemberLevel;
-import com.macro.mall.model.UmsMemberLevelExample;
-import com.macro.mall.portal.service.UmsMemberCacheService;
-import com.macro.mall.portal.service.UmsMemberService;
-import com.macro.mall.portal.util.StpMemberUtil;
+import com.peng.sms.constant.AuthConstant;
+import com.peng.sms.dto.UserDto;
+import com.peng.sms.exception.Asserts;
+import com.peng.sms.mapper.UmsMemberLevelMapper;
+import com.peng.sms.mapper.UmsMemberMapper;
+import com.peng.sms.model.UmsMember;
+import com.peng.sms.model.UmsMemberExample;
+import com.peng.sms.model.UmsMemberLevel;
+import com.peng.sms.model.UmsMemberLevelExample;
+import com.peng.sms.service.UmsMemberCacheService;
+import com.peng.sms.service.UmsMemberService;
+import com.peng.sms.util.StpMemberUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +29,6 @@ import java.util.Random;
 
 /**
  * 会员管理Service实现类
- * Created by macro on 2018/8/3.
  */
 @Service
 public class UmsMemberServiceImpl implements UmsMemberService {

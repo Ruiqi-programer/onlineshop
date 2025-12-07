@@ -1,42 +1,53 @@
-package com.macro.mall.portal.service;
+package com.peng.sms.service;
 
-import com.macro.mall.model.UmsMemberReceiveAddress;
+import com.peng.sms.model.UmsMemberReceiveAddress;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 /**
- * 用户地址管理Service
- * Created by macro on 2018/8/28.
+ * User address management service
  */
 public interface UmsMemberReceiveAddressService {
+
     /**
-     * 添加收货地址
+     * Add a new delivery address
+     *
+     * @param address the delivery address to add
+     * @return number of records added
      */
     int add(UmsMemberReceiveAddress address);
 
     /**
-     * 删除收货地址
-     * @param id 地址表的id
+     * Delete a delivery address
+     *
+     * @param id the ID of the address
+     * @return number of records deleted
      */
     int delete(Long id);
 
     /**
-     * 修改收货地址
-     * @param id 地址表的id
-     * @param address 修改的收货地址信息
+     * Update a delivery address
+     *
+     * @param id      the ID of the address to update
+     * @param address the updated address information
+     * @return number of records updated
      */
     @Transactional
     int update(Long id, UmsMemberReceiveAddress address);
 
     /**
-     * 返回当前用户的收货地址
+     * List all delivery addresses of the current user
+     *
+     * @return list of addresses
      */
     List<UmsMemberReceiveAddress> list();
 
     /**
-     * 获取地址详情
-     * @param id 地址id
+     * Get details of a specific address
+     *
+     * @param id the address ID
+     * @return the address details
      */
     UmsMemberReceiveAddress getItem(Long id);
 }

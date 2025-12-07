@@ -1,17 +1,22 @@
-package com.macro.mall.portal.domain;
+package com.peng.sms.domain;
 
-import com.macro.mall.model.PmsProduct;
-import com.macro.mall.model.PmsProductAttribute;
-import com.macro.mall.model.PmsSkuStock;
+import com.peng.sms.model.PmsProduct;
+import com.peng.sms.model.PmsProductAttribute;
+import com.peng.sms.model.PmsSkuStock;
 
 import java.util.List;
 
 /**
- * 购物车中选择规格的商品信息
- * Created by macro on 2018/8/2.
+ * Product information in the shopping cart with selected specifications
  */
 public class CartProduct extends PmsProduct {
+    /**
+     * List of product attributes
+     */
     private List<PmsProductAttribute> productAttributeList;
+    /**
+     * List of SKU stock items
+     */
     private List<PmsSkuStock> skuStockList;
 
     public List<PmsProductAttribute> getProductAttributeList() {

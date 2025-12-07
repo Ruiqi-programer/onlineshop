@@ -1,14 +1,17 @@
-package com.macro.mall.portal.dao;
+package com.peng.sms.dao;
 
-import com.macro.mall.model.OmsOrderItem;
+import com.peng.sms.model.OmsOrderItem;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
 /**
- * 订单商品信息自定义Dao
- * Created by macro on 2018/9/3.
+ * Custom DAO for order item information
  */
 public interface PortalOrderItemDao {
-    int insertList(@Param("list") List<OmsOrderItem> list);
+
+    /**
+     * Batch insert order items
+     */
+    void insertList(@Param("list") List<OmsOrderItem> list);
 }

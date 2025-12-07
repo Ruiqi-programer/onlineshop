@@ -1,10 +1,10 @@
-package com.macro.mall.portal.service.impl;
+package com.peng.sms.service.impl;
 
-import com.macro.mall.model.UmsMember;
-import com.macro.mall.portal.domain.MemberBrandAttention;
-import com.macro.mall.portal.repository.MemberBrandAttentionRepository;
-import com.macro.mall.portal.service.MemberAttentionService;
-import com.macro.mall.portal.service.UmsMemberService;
+import com.peng.sms.domain.MemberBrandAttention;
+import com.peng.sms.model.UmsMember;
+import com.peng.sms.repository.MemberBrandAttentionRepository;
+import com.peng.sms.service.MemberAttentionService;
+import com.peng.sms.service.UmsMemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -12,11 +12,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
-import java.util.List;
 
 /**
- * 会员关注Service实现类
- * Created by macro on 2018/8/2.
+ * Member Attention Service Implementation
  */
 @Service
 public class MemberAttentionServiceImpl implements MemberAttentionService {
@@ -33,7 +31,11 @@ public class MemberAttentionServiceImpl implements MemberAttentionService {
         memberBrandAttention.setMemberNickname(member.getNickname());
         memberBrandAttention.setMemberIcon(member.getIcon());
         memberBrandAttention.setCreateTime(new Date());
-        MemberBrandAttention findAttention = memberBrandAttentionRepository.findByMemberIdAndBrandId(memberBrandAttention.getMemberId(), memberBrandAttention.getBrandId());
+
+        // Check if the member has already followed this brand
+        MemberBrandAttention findAttention = memberBrandAttentionRepository
+                .findByMemberIdAndBrandId(memberBrandAttention.getMemberId(), memberBrandAttention.getBrandId());
+
         if (findAttention == null) {
             memberBrandAttentionRepository.save(memberBrandAttention);
             count = 1;
@@ -44,14 +46,14 @@ public class MemberAttentionServiceImpl implements MemberAttentionService {
     @Override
     public int delete(Long brandId) {
         UmsMember member = memberService.getCurrentMember();
-        return memberBrandAttentionRepository.deleteByMemberIdAndBrandId(member.getId(),brandId);
+        return memberBrandAttentionRepository.deleteByMemberIdAndBrandId(member.getId(), brandId);
     }
 
     @Override
     public Page<MemberBrandAttention> list(Integer pageNum, Integer pageSize) {
         UmsMember member = memberService.getCurrentMember();
-        Pageable pageable = PageRequest.of(pageNum-1,pageSize);
-        return memberBrandAttentionRepository.findByMemberId(member.getId(),pageable);
+        Pageable pageable = PageRequest.of(pageNum - 1, pageSize);
+        return memberBrandAttentionRepository.findByMemberId(member.getId(), pageable);
     }
 
     @Override

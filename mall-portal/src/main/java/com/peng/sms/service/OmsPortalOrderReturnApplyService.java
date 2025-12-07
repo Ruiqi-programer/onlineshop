@@ -1,14 +1,14 @@
-package com.macro.mall.portal.service;
+package com.peng.sms.service;
 
-import com.macro.mall.portal.domain.OmsOrderReturnApplyParam;
+import com.peng.sms.domain.OmsOrderReturnApplyParam;
 
 /**
- * 订单退货管理Service
- * Created by macro on 2018/10/17.
+ * Order Return Management Service
  */
 public interface OmsPortalOrderReturnApplyService {
+
     /**
-     * 提交申请
+     * Submit a return request
      */
     int create(OmsOrderReturnApplyParam returnApply);
 }

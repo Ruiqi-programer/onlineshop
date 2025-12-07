@@ -1,47 +1,49 @@
-package com.macro.mall.portal.service;
+package com.peng.sms.service;
 
-import com.macro.mall.model.CmsSubject;
-import com.macro.mall.model.PmsProduct;
-import com.macro.mall.model.PmsProductCategory;
-import com.macro.mall.portal.domain.HomeContentResult;
+
+import com.peng.sms.domain.HomeContentResult;
+import com.peng.sms.model.CmsSubject;
+import com.peng.sms.model.PmsProduct;
+import com.peng.sms.model.PmsProductCategory;
 
 import java.util.List;
 
 /**
- * 首页内容管理Service
- * Created by macro on 2019/1/28.
+ * Service for managing homepage content
  */
 public interface HomeService {
 
     /**
-     * 获取首页内容
+     * Get homepage content
      */
     HomeContentResult content();
 
     /**
-     * 首页商品推荐
+     * Get recommended products for the homepage
      */
     List<PmsProduct> recommendProductList(Integer pageSize, Integer pageNum);
 
     /**
-     * 获取商品分类
-     * @param parentId 0:获取一级分类；其他：获取指定二级分类
+     * Get product categories
+     *
+     * @param parentId 0: get first-level categories; others: get specified second-level categories
      */
     List<PmsProductCategory> getProductCateList(Long parentId);
 
     /**
-     * 根据专题分类分页获取专题
-     * @param cateId 专题分类id
+     * Get subjects by category with pagination
+     *
+     * @param cateId category ID for the subject
      */
     List<CmsSubject> getSubjectList(Long cateId, Integer pageSize, Integer pageNum);
 
     /**
-     * 分页获取人气推荐商品
+     * Get popular recommended products with pagination
      */
     List<PmsProduct> hotProductList(Integer pageNum, Integer pageSize);
 
     /**
-     * 分页获取新品推荐商品
+     * Get newly recommended products with pagination
      */
     List<PmsProduct> newProductList(Integer pageNum, Integer pageSize);
 }

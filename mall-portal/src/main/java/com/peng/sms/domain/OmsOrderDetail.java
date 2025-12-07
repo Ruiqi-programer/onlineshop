@@ -1,13 +1,13 @@
-package com.macro.mall.portal.domain;
+package com.peng.sms.domain;
 
-import com.macro.mall.model.OmsOrder;
-import com.macro.mall.model.OmsOrderItem;
+
+import com.peng.sms.model.OmsOrder;
+import com.peng.sms.model.OmsOrderItem;
 
 import java.util.List;
 
 /**
- * 包含订单商品信息的订单详情
- * Created by macro on 2018/9/4.
+ * Order Details with Items
  */
 public class OmsOrderDetail extends OmsOrder {
     private List<OmsOrderItem> orderItemList;

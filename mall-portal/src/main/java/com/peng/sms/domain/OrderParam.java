@@ -1,4 +1,4 @@
-package com.macro.mall.portal.domain;
+package com.peng.sms.domain;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
@@ -7,20 +7,24 @@ import lombok.EqualsAndHashCode;
 import java.util.List;
 
 /**
- * 生成订单时传入的参数
+ * Parameters passed when creating an order
  * Created by macro on 2018/8/30.
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
 public class OrderParam {
-    @Schema(title = "收货地址ID")
+    @Schema(title = "ID of the shipping address")
     private Long memberReceiveAddressId;
-    @Schema(title = "优惠券ID")
+
+    @Schema(title = "Coupon ID")
     private Long couponId;
-    @Schema(title = "使用的积分数")
+
+    @Schema(title = "Number of points to use")
     private Integer useIntegration;
-    @Schema(title = "支付方式")
+
+    @Schema(title = "Payment method")
     private Integer payType;
-    @Schema(title = "被选中的购物车商品ID")
+
+    @Schema(title = "IDs of selected items in the shopping cart")
     private List<Long> cartIds;
 }

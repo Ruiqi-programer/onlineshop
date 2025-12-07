@@ -1,17 +1,18 @@
-package com.macro.mall.portal.domain;
+package com.peng.sms.domain;
 
-import com.macro.mall.model.PmsProductCategory;
+import com.peng.sms.model.PmsProductCategory;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.util.List;
 
 /**
- * 商品分类，包含子分类
+ * Product category including subcategories
  * Created by macro on 2020/4/6.
  */
 @Getter
 @Setter
 public class PmsProductCategoryNode extends PmsProductCategory {
+    // Subcategories
     private List<PmsProductCategoryNode> children;
 }

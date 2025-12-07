@@ -1,32 +1,32 @@
-package com.macro.mall.portal.service;
+package com.peng.sms.service;
 
-import com.macro.mall.portal.domain.MemberReadHistory;
+import com.peng.sms.domain.MemberReadHistory;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
 
 /**
- * 会员浏览记录管理Service
- * Created by macro on 2018/8/3.
+ * Member Browsing History Management Service
  */
 public interface MemberReadHistoryService {
+
     /**
-     * 生成浏览记录
+     * Create a browsing record
      */
     int create(MemberReadHistory memberReadHistory);
 
     /**
-     * 批量删除浏览记录
+     * Delete browsing records in bulk
      */
     int delete(List<String> ids);
 
     /**
-     * 分页获取用户浏览历史记录
+     * Get paginated list of user's browsing history
      */
     Page<MemberReadHistory> list(Integer pageNum, Integer pageSize);
 
     /**
-     * 清空浏览记录
+     * Clear all browsing records
      */
     void clear();
 }

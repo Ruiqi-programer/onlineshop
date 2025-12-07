@@ -1,24 +1,37 @@
-package com.macro.mall.portal.domain;
+package com.peng.sms.domain;
 
-import com.macro.mall.model.OmsCartItem;
-
+import com.peng.sms.model.OmsCartItem;
 import java.math.BigDecimal;
 
 /**
- * Created by macro on 2018/8/27.
- * 购物车中促销信息的封装
+ * Encapsulation of promotion information in the shopping cart
  */
-public class CartPromotionItem extends OmsCartItem{
-    //促销活动信息
+public class CartPromotionItem extends OmsCartItem {
+    /**
+     * Promotion activity information
+     */
     private String promotionMessage;
-    //促销活动减去的金额，针对每个商品
+
+    /**
+     * Amount reduced by promotion for each product
+     */
     private BigDecimal reduceAmount;
-    //商品的真实库存（剩余库存-锁定库存）
+
+    /**
+     * Actual stock of the product (remaining stock - locked stock)
+     */
     private Integer realStock;
-    //购买商品赠送积分
+
+    /**
+     * Reward points given for purchasing the product
+     */
     private Integer integration;
-    //购买商品赠送成长值
+
+    /**
+     * Growth value given for purchasing the product
+     */
     private Integer growth;
+
     public String getPromotionMessage() {
         return promotionMessage;
     }

@@ -1,22 +1,34 @@
-package com.macro.mall.portal.service;
+package com.peng.sms.service;
 
-import com.macro.mall.portal.domain.MemberProductCollection;
+import com.peng.sms.domain.MemberProductCollection;
 import org.springframework.data.domain.Page;
 
-import java.util.List;
-
 /**
- * 会员收藏Service
- * Created by macro on 2018/8/2.
+ * Member Product Collection Service
  */
 public interface MemberCollectionService {
+    /**
+     * Add a product to the member's collection
+     */
     int add(MemberProductCollection productCollection);
 
+    /**
+     * Remove a product from the member's collection
+     */
     int delete(Long productId);
 
+    /**
+     * Get a paginated list of collected products
+     */
     Page<MemberProductCollection> list(Integer pageNum, Integer pageSize);
 
+    /**
+     * Get details of a collected product
+     */
     MemberProductCollection detail(Long productId);
 
+    /**
+     * Clear all collected products
+     */
     void clear();
 }

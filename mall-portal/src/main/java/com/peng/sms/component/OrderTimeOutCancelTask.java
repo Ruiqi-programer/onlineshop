@@ -1,29 +1,29 @@
-package com.macro.mall.portal.component;
+package com.peng.sms.component;
 
-import com.macro.mall.portal.service.OmsPortalOrderService;
+import com.peng.sms.service.OmsPortalOrderService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Component;
 
 /**
- * Created by macro on 2018/8/24.
- * 订单超时取消并解锁库存的定时器
+ * Scheduler for cancelling overdue orders and unlocking stock
  */
 //@Component
 public class OrderTimeOutCancelTask {
-    private Logger LOGGER =LoggerFactory.getLogger(OrderTimeOutCancelTask.class);
+    private Logger LOGGER = LoggerFactory.getLogger(OrderTimeOutCancelTask.class);
+
     @Autowired
     private OmsPortalOrderService portalOrderService;
 
     /**
-     * cron表达式：Seconds Minutes Hours DayofMonth Month DayofWeek [Year]
-     * 每10分钟扫描一次，扫描设定超时时间之前下的订单，如果没支付则取消该订单
+     * Cron expression: Seconds Minutes Hours DayOfMonth Month DayOfWeek [Year]
+     * Runs every 10 minutes to scan orders placed before the set timeout.
+     * Cancels orders that have not been paid and releases locked stock accordingly.
      */
     @Scheduled(cron = "0 0/10 * ? * ?")
-    private void cancelTimeOutOrder(){
+    private void cancelTimeOutOrder() {
         Integer count = portalOrderService.cancelTimeOutOrder();
-        LOGGER.info("取消订单，并根据sku编号释放锁定库存，取消订单数量：{}",count);
+        LOGGER.info("Cancelled orders and released locked stock by SKU. Number of orders cancelled: {}", count);
     }
 }
