@@ -11,17 +11,16 @@ import org.mybatis.generator.internal.util.StringUtility;
 import java.util.Properties;
 
 /**
- * 自定义注释生成器
- * Created by macro on 2018/4/26.
+ * Custom Comment Generator
  */
 public class CommentGenerator extends DefaultCommentGenerator {
     private boolean addRemarkComments = false;
-    private static final String EXAMPLE_SUFFIX="Example";
-    private static final String MAPPER_SUFFIX="Mapper";
-    private static final String API_MODEL_PROPERTY_FULL_CLASS_NAME="io.swagger.v3.oas.annotations.media.Schema";
+    private static final String EXAMPLE_SUFFIX = "Example";
+    private static final String MAPPER_SUFFIX = "Mapper";
+    private static final String API_MODEL_PROPERTY_FULL_CLASS_NAME = "io.swagger.v3.oas.annotations.media.Schema";
 
     /**
-     * 设置用户配置的参数
+     * Set user-defined configuration properties
      */
     @Override
     public void addConfigurationProperties(Properties properties) {
@@ -30,44 +29,47 @@ public class CommentGenerator extends DefaultCommentGenerator {
     }
 
     /**
-     * 给字段添加注释
+     * Add comments to a field
      */
     @Override
     public void addFieldComment(Field field, IntrospectedTable introspectedTable,
                                 IntrospectedColumn introspectedColumn) {
         String remarks = introspectedColumn.getRemarks();
-        //根据参数和备注信息判断是否添加swagger注解信息
-        if(addRemarkComments&&StringUtility.stringHasValue(remarks)){
-//            addFieldJavaDoc(field, remarks);
-            //数据库中特殊字符需要转义
-            if(remarks.contains("\"")){
-                remarks = remarks.replace("\"","'");
+        // Determine whether to add Swagger annotation based on config and remarks
+        if (addRemarkComments && StringUtility.stringHasValue(remarks)) {
+            // Escape special characters in the database remarks
+            if (remarks.contains("\"")) {
+                remarks = remarks.replace("\"", "'");
             }
-            //给model的字段添加swagger注解
-            field.addJavaDocLine("@Schema(title = \""+remarks+"\")");
+            // Add Swagger annotation to the model field
+            field.addJavaDocLine("@Schema(title = \"" + remarks + "\")");
         }
     }
 
     /**
-     * 给model的字段添加注释
+     * Add JavaDoc comments to a model field
      */
     private void addFieldJavaDoc(Field field, String remarks) {
-        //文档注释开始
+        // Start JavaDoc
         field.addJavaDocLine("/**");
-        //获取数据库字段的备注信息
+        // Add database field remarks
         String[] remarkLines = remarks.split(System.getProperty("line.separator"));
-        for(String remarkLine:remarkLines){
-            field.addJavaDocLine(" * "+remarkLine);
+        for (String remarkLine : remarkLines) {
+            field.addJavaDocLine(" * " + remarkLine);
         }
         addJavadocTag(field, false);
         field.addJavaDocLine(" */");
     }
 
+    /**
+     * Add file-level comments for a Java file
+     */
     @Override
     public void addJavaFileComment(CompilationUnit compilationUnit) {
         super.addJavaFileComment(compilationUnit);
-        //只在model中添加swagger注解类的导入
-        if(!compilationUnit.getType().getFullyQualifiedName().contains(MAPPER_SUFFIX)&&!compilationUnit.getType().getFullyQualifiedName().contains(EXAMPLE_SUFFIX)){
+        // Only add import for Swagger annotation in model classes, not in Mapper or Example classes
+        if (!compilationUnit.getType().getFullyQualifiedName().contains(MAPPER_SUFFIX)
+                && !compilationUnit.getType().getFullyQualifiedName().contains(EXAMPLE_SUFFIX)) {
             compilationUnit.addImportedType(new FullyQualifiedJavaType(API_MODEL_PROPERTY_FULL_CLASS_NAME));
         }
     }

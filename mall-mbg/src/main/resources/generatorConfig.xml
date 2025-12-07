@@ -9,16 +9,22 @@
         <property name="beginningDelimiter" value="`"/>
         <property name="endingDelimiter" value="`"/>
         <property name="javaFileEncoding" value="UTF-8"/>
-        <!-- 为模型生成序列化方法-->
+
+        <!-- Generate Serializable interface for models -->
         <plugin type="org.mybatis.generator.plugins.SerializablePlugin"/>
-        <!-- 为生成的Java模型创建一个toString方法 -->
+
+        <!-- Generate toString method for Java models -->
         <plugin type="org.mybatis.generator.plugins.ToStringPlugin"/>
-        <!--生成mapper.xml时覆盖原文件-->
-        <plugin type="org.mybatis.generator.plugins.UnmergeableXmlMappersPlugin" />
-        <commentGenerator type="com.macro.mall.CommentGenerator">
-            <!-- 是否去除自动生成的注释 true：是 ： false:否 -->
+
+        <!-- Overwrite XML mapper files when generating -->
+        <plugin type="org.mybatis.generator.plugins.UnmergeableXmlMappersPlugin"/>
+
+        <commentGenerator type="com.peng.sms.CommentGenerator">
+            <!-- Remove all auto-generated comments: true = yes, false = no -->
             <property name="suppressAllComments" value="true"/>
+            <!-- Suppress adding date in comments -->
             <property name="suppressDate" value="true"/>
+            <!-- Add database remarks as comments/annotations -->
             <property name="addRemarkComments" value="true"/>
         </commentGenerator>
 
@@ -26,17 +32,21 @@
                         connectionURL="${jdbc.connectionURL}"
                         userId="${jdbc.userId}"
                         password="${jdbc.password}">
-            <!--解决mysql驱动升级到8.0后不生成指定数据库代码的问题-->
-            <property name="nullCatalogMeansCurrent" value="true" />
+            <!-- Fix issue with MySQL 8.0 driver where code for a specific database is not generated -->
+            <property name="nullCatalogMeansCurrent" value="true"/>
         </jdbcConnection>
 
-        <javaModelGenerator targetPackage="com.macro.mall.model" targetProject="mall-mbg\src\main\java"/>
+        <!-- Java model generation configuration -->
+        <javaModelGenerator targetPackage="com.peng.sms.model" targetProject="mall-mbg/src/main/java"/>
 
-        <sqlMapGenerator targetPackage="com.macro.mall.mapper" targetProject="mall-mbg\src\main\resources"/>
+        <!-- XML mapper generation configuration -->
+        <sqlMapGenerator targetPackage="mapper" targetProject="mall-mbg/src/main/resources"/>
 
-        <javaClientGenerator type="XMLMAPPER" targetPackage="com.macro.mall.mapper"
-                             targetProject="mall-mbg\src\main\java"/>
-        <!--生成全部表tableName设为%-->
+        <!-- Java client (mapper interface) generation configuration -->
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.peng.sms.mapper"
+                             targetProject="mall-mbg/src/main/java"/>
+
+        <!-- Generate all tables: tableName=% -->
         <table tableName="%">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
